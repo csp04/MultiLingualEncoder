@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29201.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiLingualEncoder", "MultiLingualEncoder\MultiLingualEncoder.csproj", "{D843702D-0572-4C53-82FE-E26857ACFAC7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D843702D-0572-4C53-82FE-E26857ACFAC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D843702D-0572-4C53-82FE-E26857ACFAC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D843702D-0572-4C53-82FE-E26857ACFAC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D843702D-0572-4C53-82FE-E26857ACFAC7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {019FE5CB-0DED-4DE0-AE75-646E6B0AF766}
+	EndGlobalSection
+EndGlobal
