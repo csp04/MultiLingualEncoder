@@ -1,40 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace MultiLingualEncoder
+namespace multilingualencoderlib
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            //string text = "（书、杂志等中区别于图片的）";
-            //string text = "วรรณยุต";
-            string text = "똠양꿍";
-
-            using (var f = File.Create("txt.txt"))
-            {
-                using(var fw = new StreamWriter(f))
-                    foreach (var enc in Encoder.GetEncodings())
-                    {
-                        var encoder = new Encoder(enc);
-
-                        var encoded = encoder.Encode(text);
-                        var decoded = encoder.Decode(encoded);
-                        var binaryStr = encoder.BinaryString(text);
-                        var hex = encoder.Hex(text);
-
-                        if (encoder.IsValidEncoding(text))
-                            fw.WriteLine(enc.HeaderName + ":\t\t\t\t\t\t\t\t" + encoded + " = " + decoded + "  -- " + binaryStr + " " + hex);
-                    }
-
-            }
-            
-        }
-    }
-
     public interface IEncoder
     {
         string Encode(string text);
@@ -43,9 +13,12 @@ namespace MultiLingualEncoder
         bool IsValidEncoding(string text);
     }
 
-    public class Encoder : IEncoder
+    public class Encod3r : IEncoder
     {
-        public static Encoding[] GetEncodings() => Encoding.GetEncodings().Select(info => Encoding.GetEncoding(info.Name)).ToArray();
+        public static Encoding[] GetEncodings() => Encoding.GetEncodings()
+                                                        .Select(info => Encoding.GetEncoding(info.Name))
+                                                        .OrderBy(enc => enc.HeaderName)
+                                                        .ToArray();
 
         public Encoding Encoding { get; }
 
@@ -65,7 +38,7 @@ namespace MultiLingualEncoder
 
 
 
-        public Encoder(Encoding encoding)
+        public Encod3r(Encoding encoding)
         {
             this.Encoding = encoding;
         }
