@@ -9,7 +9,7 @@
                         <Label.Content>
                             <TextBlock>
                                 <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0} ({1} byte count)">
+                                    <MultiBinding StringFormat="{}{0} ({1} byte/s per character)">
                                         <Binding Path="EncodingName" />
                                         <Binding Path="ByteCount" />
                                     </MultiBinding>
