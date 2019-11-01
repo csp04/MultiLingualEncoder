@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:mle_app"
         xmlns:vm="clr-namespace:mle_app.ViewModels"
+        xmlns:cb="clr-namespace:mle_app.Views.CustomBehaviors"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Title="Multi Lingual Encoder" Height="537" Width="766"
         FontFamily="Consolas">
@@ -16,18 +18,45 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid DataContext="{StaticResource MainWindowViewModel}">
+    <Grid DataContext="{StaticResource MainWindowViewModel}" Background="#FF3E3D3D">
         <Grid.RowDefinitions>
             <RowDefinition Height="73"></RowDefinition>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Label Content="Input:" Grid.Row="0" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="112"/>
-        <TextBox Grid.Row="0" Margin="10,36,10,15" Name="txtInput" Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" />
-        <ListBox Grid.Row="1" 
+        <Label Content="Input:" Grid.Row="0" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="112" Foreground="#FFE4E0E0"/>
+        <TextBox Grid.Row="0" Margin="10,36,10,15" Name="txtInput" Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="211" />
+                <ColumnDefinition Width="547*" />
+            </Grid.ColumnDefinitions>
+
+            <ListBox Grid.Column="0"
+                         ItemsSource="{Binding EncoderList}" 
+                         SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}"
+                         >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding EncodingName}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <ListBox Grid.Column="1"
                  ItemsSource="{Binding EncoderList}" 
                  ItemTemplate="{StaticResource EncodingListBoxItem}"
+                 ItemContainerStyle="{StaticResource lbItemStyle1}"
+                 SelectedItem="{Binding SelectedItem}"
                  AlternationCount="2"
-                 />
-        
+                 Background="#FF3E3D3D" 
+                >
+                <i:Interaction.Behaviors>
+                    <cb:ListBoxBehavior ScrollIntoViewSelectedItem="True" />
+                </i:Interaction.Behaviors>
+            </ListBox>
+        </Grid>
+
+
+
     </Grid>
 </Window>

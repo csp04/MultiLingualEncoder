@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using mle_app.Common;
+using multilingualencoderlib;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using mle_app.Common;
-using multilingualencoderlib;
 
 namespace mle_app.Models
 {
@@ -30,7 +26,7 @@ namespace mle_app.Models
         {
             this.PropertyChanged += (s, e) =>
             {
-                if(e.PropertyName == "EncodingName")
+                if (e.PropertyName == "EncodingName")
                 {
                     m_encoder = new Encod3r(Encoding.GetEncoding(EncodingName));
                 }
@@ -41,6 +37,11 @@ namespace mle_app.Models
                     Binary = m_encoder.BinaryString(Text);
                     Hex = m_encoder.Hex(Text);
                     IsValid = m_encoder.IsValidEncoding(Text);
+
+                    var encTextLen = EncodedText.Length;
+                    var txtLen = Text.Length;
+
+                    ByteCount = txtLen > 0 ? encTextLen / txtLen : 0;
                 }
             };
             EncodingName = encoding;
@@ -93,7 +94,7 @@ namespace mle_app.Models
             {
                 return Get<string>();
             }
-             set
+            set
             {
                 Set(value);
             }
@@ -105,7 +106,7 @@ namespace mle_app.Models
             {
                 return Get<string>();
             }
-             set
+            set
             {
                 Set(value);
             }
@@ -117,14 +118,24 @@ namespace mle_app.Models
             {
                 return Get<string>();
             }
-             set
+            set
+            {
+                Set(value);
+            }
+        }
+
+        public int ByteCount
+        {
+            get
+            {
+                return Get<int>();
+            }
+            set
             {
                 Set(value);
             }
         }
 
 
-
-        
     }
 }

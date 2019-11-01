@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,7 +15,7 @@ namespace MultiLingualEncoder
 
             using (var f = File.Create("txt.txt"))
             {
-                using(var fw = new StreamWriter(f))
+                using (var fw = new StreamWriter(f))
                     foreach (var enc in Encoder.GetEncodings())
                     {
                         var encoder = new Encoder(enc);
@@ -31,7 +30,7 @@ namespace MultiLingualEncoder
                     }
 
             }
-            
+
         }
     }
 

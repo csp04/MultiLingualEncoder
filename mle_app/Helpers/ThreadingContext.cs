@@ -24,7 +24,7 @@ namespace mle_app.ThreadSafe
     public sealed class SyncContext : IThreadContext
     {
 
-        private SynchronizationContext _syncContext;
+        private readonly SynchronizationContext _syncContext;
 
         private SyncContext()
         {
@@ -78,7 +78,7 @@ namespace mle_app.ThreadSafe
     public sealed class WpfContext : IThreadContext
     {
 
-        private Dispatcher _dispatcher;
+        private readonly Dispatcher _dispatcher;
 
         private WpfContext()
         {

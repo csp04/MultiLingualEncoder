@@ -1,8 +1,8 @@
-﻿using System;
+﻿using mle_app.Common.ObjectModel.ValidationRule;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.ComponentModel;
-using mle_app.Common.ObjectModel.ValidationRule;
+using System.Linq;
 
 namespace mle_app.Common.ObjectModel
 {

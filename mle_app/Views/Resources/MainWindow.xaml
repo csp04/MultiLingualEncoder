@@ -3,31 +3,54 @@
                     xmlns:vm="clr-namespace:mle_app.ViewModels"
                     >
     <DataTemplate x:Key="EncodingListBoxItem">
-        <Grid Margin="0 0 0 10" >
-            <StackPanel >
-                <Label Content="{Binding EncodingName}" FontWeight="Bold" Background="Aquamarine"  />
-                <TextBox Text="{Binding EncodedText}"  IsReadOnly="True" 
+            <Grid Margin="1 1 1 1">
+                <StackPanel >
+                    <Label FontWeight="Bold" Background="DarkGray">
+                        <Label.Content>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} ({1} byte count)">
+                                        <Binding Path="EncodingName" />
+                                        <Binding Path="ByteCount" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Label.Content>
+                    </Label>
+                    <TextBox Text="{Binding EncodedText}"  IsReadOnly="True" 
                          vm:MainWindowViewModel.RegisterCommandBindings="{Binding CommandBindings}">
-                </TextBox>
-                <Label Content="Binary" FontWeight="Bold" />
-                <TextBox Text="{Binding Binary}" IsReadOnly="True" />
-                <Label Content="Hex" FontWeight="Bold" />
-                <TextBox Text="{Binding Hex}" IsReadOnly="True" />
-            </StackPanel>
-        </Grid>
+                    </TextBox>
+                    <Label Content="Binary" FontWeight="Bold" />
+                    <TextBox Text="{Binding Binary}" IsReadOnly="True" />
+                    <Label Content="Hex" FontWeight="Bold" />
+                    <TextBox Text="{Binding Hex}" IsReadOnly="True" />
+                </StackPanel>
+            </Grid>
+  
     </DataTemplate>
 
-    <Style  TargetType="{x:Type ListBoxItem}">
+
+    <Style TargetType="{x:Type ListBoxItem}" x:Key="lbItemStyle1">
+        <Setter Property="Margin" Value="2 2 2 2" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Style.Triggers>
-            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                <Setter Property="Background" Value="#19f39611"></Setter>
-            </Trigger>
-            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                <Setter Property="Background" Value="#19000000"></Setter>
-            </Trigger>
-        </Style.Triggers>
-        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border x:Name="lbBorder">
+                        <ContentPresenter/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                            <Setter TargetName="lbBorder" Property="Background" Value="White"></Setter>
+                        </Trigger>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter TargetName="lbBorder" Property="Background" Value="LightGray"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
-    
+
+
 </ResourceDictionary>

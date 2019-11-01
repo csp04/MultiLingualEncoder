@@ -1,20 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using mle_app.Common;
+﻿using mle_app.Common;
 using mle_app.Common.AsyncObject;
 using mle_app.Models;
 using multilingualencoderlib;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 
 namespace mle_app.ViewModels
 {
     public class MainWindowViewModel : NotifyBase
     {
+        private readonly ProducerConsumer<Action> pc;
 
+        public EncoderModel SelectedItem
+        {
+            get
+            {
+                return Get<EncoderModel>();
+            }
+            set
+            {
+                Set(value);
+            }
+        }
 
         public string InputText
         {
@@ -29,7 +39,7 @@ namespace mle_app.ViewModels
         }
 
 
-        public AsyncObservableCollection<EncoderModel> EncoderList
+        public ObservableCollection<EncoderModel> EncoderList
         {
             get
             {
@@ -43,18 +53,25 @@ namespace mle_app.ViewModels
 
         public MainWindowViewModel()
         {
+            pc = new ProducerConsumer<Action>() { AlwaysConsumeLastItem = true };
+
+            pc.Next += (s, method) => method.Invoke();
 
             EncoderList = new AsyncObservableCollection<EncoderModel>();
             this.PropertyChanged += (_, e) =>
             {
 
-                if(e.PropertyName == "InputText")
+                if (e.PropertyName == "InputText")
                 {
-                    var encoders = Encod3r.GetEncodings().Select(enc => new EncoderModel(enc) { Text = InputText })
-                              .Where(encm => encm.IsValid);
+                    pc.Produce(() =>
+                   {
+                       var encoders = Encod3r.GetEncodings().Select(enc => new EncoderModel(enc) { Text = InputText })
+                             .Where(encm => encm.IsValid);
 
-                    EncoderList = new AsyncObservableCollection<EncoderModel>(encoders);
-                    
+                       EncoderList = new AsyncObservableCollection<EncoderModel>(encoders);
+                   });
+
+
                 }
             };
 

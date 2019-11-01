@@ -17,7 +17,7 @@ namespace mle_app.Common.ObjectModel.ValidationRule
         { }
 
 
-        private static VrContainer m_container = new VrContainer();
+        private static readonly VrContainer m_container = new VrContainer();
 
         public static void AddCustomRule<T>(string propertyName, params ValidationRuleAttribute[] rule) where T : Model
         {
