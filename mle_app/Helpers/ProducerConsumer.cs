@@ -44,11 +44,7 @@ namespace mle_app
                     if (m_queue.Count == 0)
                         Monitor.Wait(m_queue);
 
-               
-
                 if (stop) break;
-
-                T item = default;
 
                 if (AlwaysConsumeLastItem)
                 {
@@ -56,10 +52,7 @@ namespace mle_app
                         while (m_queue.Count > 1)
                             m_queue.Dequeue();
                 }
-
-                item = m_queue.Dequeue();
-
-                onConsuming(item);
+                onConsuming(m_queue.Dequeue());
             }
         }
 

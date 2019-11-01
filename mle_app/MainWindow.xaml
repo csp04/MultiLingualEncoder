@@ -48,7 +48,7 @@
                  ItemContainerStyle="{StaticResource lbItemStyle1}"
                  SelectedItem="{Binding SelectedItem}"
                  AlternationCount="2"
-                 Background="#FF3E3D3D" 
+                 Background="#FF3E3D3D"
                 >
                 <i:Interaction.Behaviors>
                     <cb:ListBoxBehavior ScrollIntoViewSelectedItem="True" />
