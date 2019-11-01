@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,14 +10,14 @@ namespace mle_app
     {
         private readonly Queue<T> m_queue;
 
-        public EventHandler<T> Next;
+        public EventHandler<T> Consuming;
         private bool stop = false;
 
         public bool AlwaysConsumeLastItem { get; set; } = false;
 
-        private void onNext(T item)
+        private void onConsuming(T item)
         {
-            Next?.Invoke(this, item);
+            Consuming?.Invoke(this, item);
         }
 
         public ProducerConsumer()
@@ -43,6 +44,8 @@ namespace mle_app
                     if (m_queue.Count == 0)
                         Monitor.Wait(m_queue);
 
+               
+
                 if (stop) break;
 
                 T item = default;
@@ -56,7 +59,7 @@ namespace mle_app
 
                 item = m_queue.Dequeue();
 
-                onNext(item);
+                onConsuming(item);
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using mle_app.Common;
 using mle_app.Common.AsyncObject;
 using mle_app.Models;
+using mle_app.ThreadSafe;
 using multilingualencoderlib;
 using System;
 using System.Collections.ObjectModel;
@@ -34,7 +35,7 @@ namespace mle_app.ViewModels
             }
             set
             {
-                Set(value);
+                WpfContext.Create().AsyncBeginInvoke(() => Set(value));
             }
         }
 
@@ -55,7 +56,7 @@ namespace mle_app.ViewModels
         {
             pc = new ProducerConsumer<Action>() { AlwaysConsumeLastItem = true };
 
-            pc.Next += (s, method) => method.Invoke();
+            pc.Consuming += (s, method) => method.Invoke();
 
             EncoderList = new AsyncObservableCollection<EncoderModel>();
             this.PropertyChanged += (_, e) =>
@@ -63,15 +64,13 @@ namespace mle_app.ViewModels
 
                 if (e.PropertyName == "InputText")
                 {
-                    pc.Produce(() =>
+                   pc.Produce(() =>
                    {
                        var encoders = Encod3r.GetEncodings().Select(enc => new EncoderModel(enc) { Text = InputText })
                              .Where(encm => encm.IsValid);
 
                        EncoderList = new AsyncObservableCollection<EncoderModel>(encoders);
                    });
-
-
                 }
             };
 

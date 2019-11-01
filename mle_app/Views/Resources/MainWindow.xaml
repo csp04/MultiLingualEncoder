@@ -4,8 +4,8 @@
                     >
     <DataTemplate x:Key="EncodingListBoxItem">
             <Grid Margin="1 1 1 1">
-                <StackPanel >
-                    <Label FontWeight="Bold" Background="DarkGray">
+                <StackPanel>
+                    <Label FontWeight="Bold" Background="DarkGray" x:Name="lbEncodingName">
                         <Label.Content>
                             <TextBlock>
                                 <TextBlock.Text>
@@ -26,7 +26,7 @@
                     <TextBox Text="{Binding Hex}" IsReadOnly="True" />
                 </StackPanel>
             </Grid>
-  
+            
     </DataTemplate>
 
 
@@ -45,6 +45,9 @@
                         </Trigger>
                         <Trigger Property="ItemsControl.AlternationIndex" Value="1">
                             <Setter TargetName="lbBorder" Property="Background" Value="LightGray"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="lbBorder" Property="Background" Value="LightBlue" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
