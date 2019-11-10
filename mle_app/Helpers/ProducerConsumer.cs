@@ -10,10 +10,11 @@ namespace mle_app
     {
         private readonly Queue<T> m_queue;
 
+        //private EventWaitHandle wh = new AutoResetEvent(false);
         public EventHandler<T> Consuming;
         private bool stop = false;
 
-        public bool AlwaysConsumeLastItem { get; set; } = false;
+        public bool PrioritizeLastItem { get; set; } = false;
 
         private void onConsuming(T item)
         {
@@ -34,6 +35,7 @@ namespace mle_app
                 m_queue.Enqueue(item);
                 Monitor.Pulse(m_queue);
             }
+           //wh.Set();
         }
 
         private void consume()
@@ -42,11 +44,14 @@ namespace mle_app
             {
                 lock (m_queue)
                     if (m_queue.Count == 0)
+                    {
                         Monitor.Wait(m_queue);
+                        //wh.WaitOne();
+                    }
 
                 if (stop) break;
 
-                if (AlwaysConsumeLastItem)
+                if (PrioritizeLastItem)
                 {
                     lock (m_queue)
                         while (m_queue.Count > 1)
@@ -58,10 +63,24 @@ namespace mle_app
 
         public void Dispose()
         {
-            stop = true;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-            lock (m_queue)
-                Monitor.Pulse(m_queue);
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                stop = true;
+
+                lock (m_queue)
+                    Monitor.Pulse(m_queue);
+            }
+        }
+
+        ~ProducerConsumer()
+        {
+            Dispose(false);
         }
     }
 }

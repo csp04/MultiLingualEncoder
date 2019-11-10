@@ -1,9 +1,11 @@
 ﻿using mle_app.Common;
 using mle_app.Common.AsyncObject;
+using mle_app.Helpers;
 using mle_app.Models;
 using mle_app.ThreadSafe;
 using multilingualencoderlib;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -54,9 +56,12 @@ namespace mle_app.ViewModels
 
         public MainWindowViewModel()
         {
-            pc = new ProducerConsumer<Action>() { AlwaysConsumeLastItem = true };
+            //pc = new ProducerConsumer<Action>() { PrioritizeLastItem = true };
 
-            pc.Consuming += (s, method) => method.Invoke();
+            //pc.Consuming += (s, method) => method.Invoke();
+
+            FuncHelper<IEnumerable<EncoderModel>>.Return += (_, encoders) =>
+                    EncoderList = new AsyncObservableCollection<EncoderModel>(encoders);
 
             EncoderList = new AsyncObservableCollection<EncoderModel>();
             this.PropertyChanged += (_, e) =>
@@ -64,13 +69,19 @@ namespace mle_app.ViewModels
 
                 if (e.PropertyName == "InputText")
                 {
-                   pc.Produce(() =>
-                   {
-                       var encoders = Encod3r.GetEncodings().Select(enc => new EncoderModel(enc) { Text = InputText })
-                             .Where(encm => encm.IsValid);
+                    //pc.Produce(() =>
+                    //{
+                    //    var encoders = Encod3r.GetEncodings().Select(enc => new EncoderModel(enc) { Text = InputText })
+                    //          .Where(encm => encm.IsValid);
 
-                       EncoderList = new AsyncObservableCollection<EncoderModel>(encoders);
-                   });
+                    //    EncoderList = new AsyncObservableCollection<EncoderModel>(encoders);
+                    //});
+
+                    FuncHelper<IEnumerable<EncoderModel>>.Race(() => Encod3r.GetEncodings()
+                                                            .Select(enc => new EncoderModel(enc) { Text = InputText })
+                                                            .Where(encm => encm.IsValid));
+
+
                 }
             };
 
